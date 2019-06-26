@@ -15,7 +15,7 @@ var hash = {
     "o": "",
     "p": "",
 };
-var localStoragehash = JSON.parse(localStorage.getItem('xxx') || '')
+var localStoragehash = JSON.parse(localStorage.getItem('xxx') || 'null')
 if (localStoragehash) {
     hash = localStoragehash;
 }
@@ -41,7 +41,7 @@ while (index < key.length) {
                  x    = prompt("请输入一个网址");
             hash[key] = x;
             localStorage.setItem('xxx', JSON.stringify(hash))
-            console.log(hash);
+            // console.log(hash);
         }
 
     }
