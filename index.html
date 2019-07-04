@@ -1,19 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>我的导航</title>
     <link rel="stylesheet" href="style.css">
+    <title>我的导航</title>
 </head>
 
 <body>
-    <header></header>
-    <main id="keybord"></main>
-    <footer></footer>
+    <main>
+        <div id="keybord"></div>
+    </main>
 </body>
-<script src="main.js"></script>
+<script>
+    //初始化数据
+    var hash = {
+        'q': 'www.qq.com',
+        'w': 'weibo.com',
+        'e': 'ele.me',
+        'r': 'renren.com',
+        't': 'tianya.com',
+        'y': 'youku.com',
+        'u': 'uu.com',
+        'i': 'iqiyi.com',
+        'o': 'opera.com',
+        'g': 'github.com',
+        'p': '',
+        'a': 'acfun.tv',
+        's': 'soho.com',
+        'z': 'zhihu.com',
+        'm': 'www.mcdonalds.com.cn'
+    };
+    var keys = [
+        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+    ]
+    var keybord, kbd, div, button, website, key, hashInLocalStorage, img;
+    //生成键盘
+
+    //变更hash获取
+    hashInLocalStorage = JSON.parse(localStorage.getItem('xxx') || 'null')
+    if (hashInLocalStorage) {
+        hash = hashInLocalStorage;
+    }
+    keybord = document.getElementById("keybord");
+    for (i = 0; i < keys.length; i++) {
+        div = document.createElement("div");
+        div.className = "row";
+        keybord.appendChild(div);
+        for (j = 0; j < keys[i].length; j++) {
+            img = document.createElement('img');
+            kbd = document.createElement("kbd");
+            kbd.className = "key";
+            button = document.createElement("button");
+            button.id = keys[i][j];
+            kbd.textContent = keys[i][j];
+            div.appendChild(kbd);
+            kbd.appendChild(button);
+            kbd.appendChild(img);
+            //添加favicon.ico
+            if (hash[keys[i][j]]) {
+                img.src = 'https://' + hash[keys[i][j]] + '/favicon.ico';
+            } else {
+                img.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+            }
+            img.onerror = function (e) {
+                e.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+            }
+            button.textContent = "编辑";
+            //实现编辑功能
+            button.onclick = function (e) {
+                button2 = e.target;
+                img2 = button2.previousSibling;
+                key = e.target.id;
+                x = prompt('请输入您的网址');
+                hash[key] = x;
+                img.src = 'http://' + x + '/favicon.ico';
+                //hash变更
+                localStorage.setItem('xxx', JSON.stringify(hash))
+            }
+
+
+        }
+    }
+    //实现键盘事件
+    document.onkeypress = function (e) {
+        key = e.key;
+        website = hash[key];
+        //location.herf = 'http://' +website
+        window.open('http://' + website, '_blank')
+    }
+</script>
 
 </html>
